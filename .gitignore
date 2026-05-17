@@ -21,6 +21,14 @@ hbaac-round2/
 *.tar.gz
 *.tgz
 
+# Competition lifecycle tracking files (ignored as per user request)
+COMPETITION_RULES.md
+EXPERIMENT_TRACKING.md
+FEATURE_DICTIONARY.md
+
+# Agent temporary skills folder
+SKILLs/
+
 # IDEs and Editors
 .vscode/
 .idea/
