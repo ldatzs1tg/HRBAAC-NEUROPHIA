@@ -1,0 +1,31 @@
+# Virtual environment
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache and temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.stats
+.coverage
+htmlcov/
+
+# Local datasets and model submissions (large files and competition raw datasets)
+hbaac-round2/
+*.csv
+*.zip
+*.tar.gz
+*.tgz
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
