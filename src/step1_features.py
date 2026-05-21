@@ -52,7 +52,7 @@ warnings.filterwarnings("ignore")
 
 CONFIG.update({
     # Update OUPUT DIR
-    "OUTPUT_DIR": Path("/kaggle/working/feature_outputs"),
+    "OUTPUT_DIR": Path("output/feature_outputs"),
     
     # ── Updated cutoff based on EDA findings ───────────────────────────────
     # Pre-2022 data is anomalously sparse (< 700 tx/month) and shows an

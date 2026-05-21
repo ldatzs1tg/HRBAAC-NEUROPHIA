@@ -8,7 +8,7 @@ import pandas as pd
 # ==========================================
 # Người dùng có thể chỉnh sửa các tham số này trực tiếp trong code hoặc truyền qua dòng lệnh (CLI).
 DEFAULT_CONFIG = {
-    "train_path": "dataset/train.csv",
+    "train_path": "hbaac-round2/train.csv",
     "sub_path": "output/submission_outputs/submission.csv",
     "output_path": "submission_experiment_new.csv",
     # 1. Khoảng thời gian gần (Recent period): tính từ (max_date - recent_days) đến max_date

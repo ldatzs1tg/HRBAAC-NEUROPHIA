@@ -38,7 +38,8 @@ import warnings
 from datetime import timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
-
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.dates as mdates
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
@@ -76,8 +77,8 @@ print("=" * 55)
 # ==============================================================================
 CONFIG: Dict = {
     # ---- File paths ----
-    "DATASET_DIR":   Path("/kaggle/input/datasets/ldatdzs1tg/hbaac-quantity-forecasting"),
-    "OUTPUT_DIR":    Path("/kaggle/working/eda_outputs"),
+    "DATASET_DIR":   Path("hbaac-round2"),
+    "OUTPUT_DIR":    Path("output/eda_outputs"),
 
     # ---- Inclusive date boundaries ----
     "TRAIN_START":        pd.Timestamp("2020-11-17"),
@@ -432,6 +433,7 @@ def load_raw_data(dataset_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     print(f"Loading submission : {sub_path}")
     sub_raw = pd.read_csv(sub_path, low_memory=False)
+    sub_raw.rename(columns={sub_raw.columns[0]: 'id'}, inplace=True)
 
     return train_raw, sub_raw
 
@@ -905,7 +907,10 @@ def eda_layer2_sku(sku_stats: pd.DataFrame) -> None:
     cum_w     = cum_w / cum_w[-1]
     cum_skus  = np.arange(1, len(cum_w) + 1) / len(cum_w)
 
-    gini = 1 - 2 * np.trapz(cum_w, cum_skus)  # Gini coefficient
+    # Manual trapezoidal integration to support NumPy 2.x (where np.trapz was removed)
+    dx = 1 / len(cum_w)
+    integral = (cum_w[0] + cum_w[-1] + 2 * np.sum(cum_w[1:-1])) * dx / 2
+    gini = 1 - 2 * integral  # Gini coefficient
 
     fig, ax = plt.subplots(figsize=(8, 8))
     ax.plot(cum_skus * 100, cum_w * 100, color="steelblue", lw=2.5,
@@ -1180,7 +1185,7 @@ def eda_layer3_temporal(
     # Use post-cutoff data only for reliable decomposition
     series_stl = (
         daily_agg[daily_agg.index >= CONFIG["EARLY_DATA_CUTOFF"]]["total_qty"]
-        .fillna(method="ffill")
+        .ffill()
     )
     try:
         stl = STL(series_stl, period=7, robust=True)

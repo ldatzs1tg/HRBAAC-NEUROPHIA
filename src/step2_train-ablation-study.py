@@ -57,7 +57,7 @@ print("lightgbm version :", lgb.__version__)
 CONFIG.update(
     {
         # Update OUPUT DIR
-        "OUTPUT_DIR": Path("/kaggle/working/submission_outputs"),
+        "OUTPUT_DIR": Path("output/submission_outputs"),
         # ── LightGBM base parameters shared by all tree models ──────────────────
         "LGBM_BASE": {
             "n_jobs": -1,
