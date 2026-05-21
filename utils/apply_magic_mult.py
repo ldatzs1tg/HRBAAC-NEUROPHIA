@@ -9,8 +9,8 @@ from pathlib import Path
 MAGIC_MULT = 1.02  
 
 # File paths
-INPUT_SUBMISSION = "post_process_submission/submission_experiment_new.csv"  # The path to your original submission
-OUTPUT_SUBMISSION = f"post_process_submission/submission_x{MAGIC_MULT}.csv"
+INPUT_SUBMISSION = "output/post_process_submissions/submission_experiment_new.csv"  # The path to your original submission
+OUTPUT_SUBMISSION = f"output/post_process_submissions/submission_x{MAGIC_MULT}.csv"
 
 
 def main():
