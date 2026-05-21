@@ -61,7 +61,7 @@ graph TD
   * **Calendar Features**: Weekday, day of the month, month, quarter, year, and cyclical calendar encodings.
   * **Holiday Proximity Features**: Tracks proximity (number of days before and after) to major national holidays like Tet Lunar New Year, letting models learn stock-up behaviors before holidays and recovery periods after.
   * **Lags & Rolling Window Statistics**: Extracts historical demand values at specific offsets (Lag 7, 14, 21, 28) and rolling statistics (rolling mean, rolling standard deviation) across multiple windows (7, 14, 28, 56 days) to capture short-term trends and long-term seasonality.
-  * **Parallel Execution**: Uses `joblib.Parallel` multi-processing to speed up feature computation across 28 million rows.
+  * **Vectorized Processing**: Leverages highly optimized, vectorized Pandas and NumPy operations to efficiently compute features across all 28 million rows without memory overhead.
 
 #### 📂 [step2_train.py](file:///c:/Users/Admin/OneDrive%20-%20National%20Economics%20University/Desktop/HBAAC/src/step2_train.py) & [step2_train-ablation-study.py](file:///c:/Users/Admin/OneDrive%20-%20National%20Economics%20University/Desktop/HBAAC/src/step2_train-ablation-study.py) — Training & Forecasting (Model Ensembling)
 * **Goal**: Train machine learning models, perform Walk-Forward Cross-Validation, ensemble predictions, and generate final submissions.
