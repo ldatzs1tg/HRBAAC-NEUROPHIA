@@ -107,7 +107,7 @@ After running Step 2 and generating the baseline prediction at `output/submissio
 ### Scenario A: Running Exploratory Data Analysis (EDA) Only
 To run the EDA data foundation stage, compile daily panels, and save the comprehensive visualizations to `output/eda_outputs/`:
 ```bash
-$env:PYTHONUTF8=1; python src/step0_eda.py
+$env:PYTHONUTF8=1; .\venv\Scripts\python.exe src/step0_eda.py
 ```
 
 ### Scenario B: Running the Full End-to-End Pipeline
@@ -115,11 +115,11 @@ Simply run Step 2. The script will automatically trigger Step 0 (EDA) and Step 1
 
 * **Main Pipeline**:
   ```bash
-  $env:PYTHONUTF8=1; python src/step2_train.py
+  $env:PYTHONUTF8=1; .\venv\Scripts\python.exe src/step2_train.py
   ```
 * **Ablation Study Pipeline**:
   ```bash
-  $env:PYTHONUTF8=1; python src/step2_train-ablation-study.py
+  $env:PYTHONUTF8=1; .\venv\Scripts\python.exe src/step2_train-ablation-study.py
   ```
 
 ### Scenario C: Running the Post-Processing Pipeline
@@ -127,10 +127,10 @@ After running Step 2 and getting `output/submission_outputs/submission.csv`, run
 
 ```bash
 # Step 1: Apply Rule Zero (Deactivate inactive/dead SKUs)
-$env:PYTHONUTF8=1; python utils/apply_rule_zero_skus.py
+$env:PYTHONUTF8=1; .\venv\Scripts\python.exe utils/apply_rule_zero_skus.py
 
 # Step 2: Apply Magic Multiplier (Default 1.02)
-$env:PYTHONUTF8=1; python utils/apply_magic_mult.py
+$env:PYTHONUTF8=1; .\venv\Scripts\python.exe utils/apply_magic_mult.py
 ```
 *(The final optimized submission file will be saved directly inside the `post_process_submission/` directory as `post_process_submission/submission_x1.02.csv` for the main run, and `post_process_submission/submission_x1.03.csv` for the ablation run).*
 
