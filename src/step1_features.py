@@ -1503,5 +1503,7 @@ def run_stage1(
 if __name__ == "__main__":
     artifacts = run_eda()
     panel = artifacts["panel"]
+    folds = artifacts["folds"]
+    naive_results = artifacts["naive_results"]
     sku_stats = artifacts["sku_stats"]
     stage1_artifacts = run_stage1(panel, sku_stats)
