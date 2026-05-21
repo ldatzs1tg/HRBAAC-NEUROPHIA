@@ -110,32 +110,41 @@ To run the EDA data foundation stage, compile daily panels, and save the compreh
 $env:PYTHONUTF8=1; .\venv\Scripts\python.exe src/step0_eda.py
 ```
 
-### Scenario B: Running the Full End-to-End Pipeline
-Simply run Step 2. The script will automatically trigger Step 0 (EDA) and Step 1 (Features) in the background:
-
-* **Main Pipeline**:
-  ```bash
-  $env:PYTHONUTF8=1; .\venv\Scripts\python.exe src/step2_train.py
-  ```
-* **Ablation Study Pipeline**:
-  ```bash
-  $env:PYTHONUTF8=1; .\venv\Scripts\python.exe src/step2_train-ablation-study.py
-  ```
-
-### Scenario C: Running the Post-Processing Pipeline
-After running Step 2 and getting `output/submission_outputs/submission.csv`, run the two post-processing steps:
+### Scenario B: Running the Full End-to-End Main Pipeline
+Simply run Step 2. The script will automatically trigger Step 0 (EDA) and Step 1 (Features) in the background. Then, sequentially run the post-processing scripts to deactivate inactive SKUs and apply the optimal multiplier for the main run:
 
 ```bash
-# Step 1: Apply Rule Zero (Deactivate inactive/dead SKUs)
+# 1. Run the core end-to-end training pipeline
+$env:PYTHONUTF8=1; .\venv\Scripts\python.exe src/step2_train.py
+
+# 2. Apply Rule Zero (Deactivate inactive/dead SKUs)
 $env:PYTHONUTF8=1; .\venv\Scripts\python.exe utils/apply_rule_zero_skus.py
 
-# Step 2: Apply Magic Multiplier (Default 1.02)
+# 3. Apply Magic Multiplier (1.02)
 $env:PYTHONUTF8=1; .\venv\Scripts\python.exe utils/apply_magic_mult.py
 ```
-*(The final optimized submission file will be saved directly inside the `post_process_submission/` directory as `post_process_submission/submission_x1.02.csv` for the main run, and `post_process_submission/submission_x1.03.csv` for the ablation run).*
+*(The final optimized submission file will be saved directly inside the `post_process_submission/` directory as `post_process_submission/submission_x1.02.csv`).*
+
+### Scenario C: Ablation Study — Expecting Improvements through Three Models Ensemble Weight Optimization
+The ablation study explores alternative ensembling weights across the three machine learning models (LightGBM Tweedie, Poisson, and ETS) to maximize the WRMSSE metric optimization. 
+
+To execute the ablation study pipeline and generate its corresponding optimized submission file:
+
+```bash
+# 1. Run the ablation study training pipeline
+$env:PYTHONUTF8=1; .\venv\Scripts\python.exe src/step2_train-ablation-study.py
+
+# 2. Apply Rule Zero (Deactivate inactive/dead SKUs)
+$env:PYTHONUTF8=1; .\venv\Scripts\python.exe utils/apply_rule_zero_skus.py
+
+# 3. Apply Magic Multiplier (1.03 for Ablation)
+$env:PYTHONUTF8=1; .\venv\Scripts\python.exe utils/apply_magic_mult.py
+```
+*(The final optimized ablation submission file will be saved directly inside the `post_process_submission/` directory as `post_process_submission/submission_x1.03.csv`).*
 
 > [!NOTE]
 > **Lưu ý quan trọng về môi trường chạy & Tính đồng nhất (Reproducibility):**
 > 1. **Cấu hình GPU mặc định**: Mặc định, pipeline được thiết lập để chạy LightGBM trên GPU (`"device": "gpu"`) nhằm tối ưu hóa thời gian huấn luyện trên tập dữ liệu lớn (~28 triệu dòng). Nếu muốn chạy trên CPU, bạn cần điều chỉnh thủ công trong cấu hình code.
 > 2. **Sự sai lệch kết quả giữa các lần chạy (Non-deterministic)**: Do đặc thù tính toán đa luồng song song (multi-threading) trên phần cứng GPU, các phép toán số thực song song có thể dẫn đến các sai số làm tròn cực kỳ nhỏ không thể tránh khỏi. Vì vậy, dù hệ thống đã cố định seed (`CONFIG["SEED"]` = 42), kết quả dự đoán (file CSV đầu ra) giữa các lần chạy khác nhau vẫn có thể có sự sai lệch nhỏ và không thể trùng khớp hoàn toàn 100%.
+
 
