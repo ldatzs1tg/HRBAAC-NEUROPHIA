@@ -77,7 +77,7 @@ print("=" * 55)
 # ==============================================================================
 CONFIG: Dict = {
     # ---- File paths ----
-    "DATASET_DIR":   Path("hbaac-round2"),
+    "DATASET_DIR":   Path("dataset"),
     "OUTPUT_DIR":    Path("output/eda_outputs"),
 
     # ---- Inclusive date boundaries ----
